@@ -12,20 +12,20 @@ $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
 
 $pdo = new PDO($dsn, $user, $password, $attr);
 
-$sql= 'SELECT p.ID, p.Slug, p.Headline, CONCAT(u.) AS Name, p.Creation_time, p.Text FROM Posts JOIN Users ON U.ID = P.Users_ID';
+$sql= 'SELECT p.ID, p.Slug, p.Headline, CONCAT(u.FName, u.LName) AS Name, p.Creation_time, p.Text FROM Posts JOIN Users ON U.ID = P.Users_ID';
 
 if ($pdo) {
   $model = array();
 
 
-  foreach($pdo->query('SELECT * FROM Posts') as $row) {
-  $model += Array(
-      $row['ID'] => array(
-        'p.slug' => $row['p.Slug'],
-        'p.Headline' => $row['p.Headline'],
-        'p.author' => $row['p.Name'],
-        'date' => $row['p.Creation_time'],
-        'p.text' => $row['p.Text']
+  foreach($pdo->query($sql) as $row) {
+          $model += array(
+              $row['ID'] => array(
+                  'slug' => $row['Slug'],
+                  'title' => $row['Headline'],
+                  'author' => $row['Name'],
+                  'date' => $row['Creation_time'],
+                  'text' => $row['Text']
         )
 
       );

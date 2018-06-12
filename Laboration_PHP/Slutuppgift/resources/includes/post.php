@@ -32,7 +32,7 @@ function slugify($slug, $strict = false) {
 
 if ($pdo) {
 
-    // Kommentar här
+    // Skapar en lista över användare och deras ID i en array.
     $sql = 'SELECT ID, Username FROM Users ORDER BY Username';
     $users = array();
     foreach ($pdo->query($sql) as $row) {
@@ -51,15 +51,15 @@ if ($pdo) {
     /********** genom variablerna $headline & $text. **********/
     /**********************************************************/
 
-    // Kommentar här
+    //Detta fungerar som ett grundkommando för variablarna. 
     if (isset($_POST['submit'])) {
-        $user = $_POST['author']; //Kommentar här
-        $headline = $_POST['title']; //Kommentar här
+        $user = $_POST['author']; //Vilken användare som skapat inlägget.
+        $headline = $_POST['title']; //Vilket namn inlägget skall ha.
         $headline = trim($headline);
 
-        $slug = slugify($headline); //Kommentar här
+        $slug = slugify($headline); //Den förenklar meningen och förhindrar att den ändras.
 
-        $text = $_POST['message']; //Kommentar här
+        $text = $_POST['message']; //Presenterar hela det inlägg som användaren gjort.
 
         $sql = 'INSERT INTO Posts (User_ID, Slug, Headline, Text) VALUES ("'.$user.'", "'.$slug.'", "'.$headline.'", "'.$text.'")';
 
@@ -72,9 +72,6 @@ if ($pdo) {
         /* databasen. Tänk på att namn på tabell & kolumner i er **/
         /* databas kan skiljas något från det jag angivit i $sql. */
         /**********************************************************/
-        /*Koden som jag skrivit in under gör så att när jag lägger upp ett
-        inlägg så skickar den en förfrågan till databasen om att lägga upp den 
-        där och databasen kommer svara med att den kommer spara inlägget eller inte*/
         if($pdo->query($sql)) {
             $message = 'Du har lyckats lägga upp ett inlägg';
         }

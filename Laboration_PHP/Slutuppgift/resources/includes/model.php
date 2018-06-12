@@ -1,14 +1,14 @@
 <?php
-require 'resources/includes/db_conn.php'; // Kommentar här
+require 'resources/includes/db_conn.php'; // De som menas är att dom behöver en uppkoppling från PHPmyAdmin
 
 if ($pdo) {
 
-    // Kommentar här
+    // Lista som visar alla inlägg som gjorts och vilka användare som gjort dom.
     $sql = 'SELECT P.ID, P.Slug, P.Headline, CONCAT(U.Firstname, " ", U.Lastname) AS Name, P.Creation_time, P.Text FROM Posts AS P JOIN Users AS U ON U.ID = P.User_ID ORDER BY P.Creation_time DESC';
 
-    // Kommentar här
+    // Presenterar sökrutan.
     if (isset($_POST['search'])) {
-        // Kommentar här
+        // Som sedan visar resultat via What.
         $data = $_POST['what'];
 
         /**********************************************************/
@@ -41,16 +41,19 @@ if ($pdo) {
         /***** texter som innehåller både "Lorum" och "Ipsum." ****/
         /**********************************************************/
 
-        // Kommentar här
+        // Om resultatet inte är tomt kommer en lista med inlägg som skapats visas.
         if (!empty($data)) {
             $sql = 'SELECT p.ID, p.Slug, p.Headline, CONCAT(u.Firstname, " ", u.Lastname) AS Name, p.Creation_time, p.Text FROM Posts AS p JOIN Users AS u ON U.ID = P.User_ID WHERE p.Text LIKE "%'.$data.'%" ORDER BY P.Creation_time DESC';
         }
     }
 
-    // Kommentar här
+    // Skapar en array
+    $model = array();
+
+    // Sorterar resultat från PDO till Row.
     $model = array();
     foreach($pdo->query($sql) as $row) {
-        // Kommentar här
+        // Strukturerar varje rad från foreach i en array.
         $model += array(
             $row['ID'] => array(
                 'slug' => $row['Slug'],
